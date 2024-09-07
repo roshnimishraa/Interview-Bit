@@ -26,3 +26,57 @@ int Solution::trap(const vector<int> &A) {
     }
     return ans;
 }
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Approach 2 : Better 
+
+Intuition: We are taking O(N) for computing leftMax and rightMax at each index. The complexity can be boiled down to O(1) if we precompute 
+the leftMax and rightMax at each index.
+
+Time Complexity: O(3*N) as we are traversing through the array only once. And O(2*N) for computing prefix and suffix array.
+
+Space Complexity: O(N)+O(N) for prefix and suffix arrays.
+
+vector<int> prefix(const vector<int> &A) {
+    int n = A.size();
+    vector<int> pre(n);
+    pre[0] = A[0]; 
+   
+    for (int i = 1; i < n; i++) {
+        pre[i] = max(pre[i - 1], A[i]);
+    }
+    
+    return pre;
+}
+
+vector<int> suffix(const vector<int> &A) {
+    int n = A.size();
+    vector<int> suff(n);
+    suff[n - 1] = A[n - 1];  
+    
+  
+    for (int i = n - 2; i >= 0; i--) {
+        suff[i] = max(suff[i + 1], A[i]);
+    }
+    
+    return suff;
+}
+
+int Solution::trap(const vector<int> &A) {
+    int n = A.size();
+    if (n == 0) return 0;  
+    
+    vector<int> pre = prefix(A);
+    vector<int> suff = suffix(A);
+
+    int ans = 0;
+    
+    for (int i = 0; i < n; i++) {
+        ans += min(pre[i], suff[i]) - A[i];
+    }
+
+    return ans;
+}
+
+          
