@@ -1,5 +1,5 @@
 Time Complexity: O(n^2B ) 
-Space Complexity: O(B)
+Space Complexity: O(B) + O(N) recursion stack space
 
 void helper(string A, int B, string &max){
     if(B==0){
